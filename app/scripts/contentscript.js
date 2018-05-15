@@ -2,7 +2,6 @@
 // import 'chromereload/devonly'
 const IdentiAddress = require('./IdentiAddress');
 const ident = new IdentiAddress();
-const $ = require("jquery");
 
 // console.log(IdentiAddress)
 // console.log(`'Allo 'Allo! Content script2`)
@@ -22,7 +21,7 @@ for(var i = 0; i < links.length; i++) {
   // document.body.appendChild(lineBreak);
 }
 
-var re = /<a.*href=\".*"|(0x)?[0-9a-zA-Z]{42}/g;
+var re = /^(0x)?[0-9a-zA-Z]{64}|^(0x)?[0-9a-zA-Z]{42}/g;
 var m;
 
 for (const a of links) {
@@ -30,10 +29,16 @@ for (const a of links) {
     let inner = a.innerHTML;
     // console.log(a.textContent.match(re))
     // console.log("poep")
-    if (a.innerHTML.indexOf("href") > -1) continue;
-    inner = inner.replace(a.textContent.match(re)["0"],ident.formatAddressBlocksBorder(a.textContent.match(re)["0"]))
+    if (inner.indexOf("<") > -1) continue;
+    inner = inner.replace(a.textContent.match(re)["0"],ident.formatAddressBlocks(a.textContent.match(re)["0"]))
+    console.log("replaced:", a.innerHTML)
     a.innerHTML = inner;
     // console.log(a.innerText)
     // console.log(a.innerHTML)
   }
 }
+let replace = ident.formatAddressBlocks("0XF3F47Be96b7aeFa33bfdD741760268ed7049b6") + " " + ident.formatAddressBlocks("0XF3F47Be96b7aeFa33bfdD741760268ed7049b5") + " " + ident.formatAddressBlocks("0x7f3f47be96b7aefa33bfdd741760268ed7049b6c") + " " + ident.formatAddressBlocks("0x7f3f47be96b4aefa33bfdd741760268ed7049b6c")
+
+console
+
+// document.getElementsByTagName("body")[0].innerHTML = replace + document.getElementsByTagName("body")[0].innerHTML;
