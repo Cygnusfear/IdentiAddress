@@ -2,6 +2,7 @@
 const chalk = require("chalk");
 const gradient = require("tinygradient");
 const testNames = require("./contractNames");
+const emoji = require('./emoji.json');
 
 class IdentiAddress {
     constructor() {
@@ -59,6 +60,78 @@ class IdentiAddress {
             let underline = i % 3 == 0 ? 'text-decoration:underline' : '';
             let rgb = palette[Math.round((ca + cb + cc) % palette.length)];
             string += `<span style="color: ${rgb} !important;${underline}">${address[i+1]}${address[i+2]}</span>`;
+        }
+        string += "</span>";
+        return string;   
+    }
+
+    formatAddressBlocksEmoji(address) {
+        //check if address is a properly formatted Ethereum address
+        if (!address) return undefined;
+        //each character is colored by its position plus ansii code
+        let rgbs = [];
+        let string = `<span style="font-family: 'roboto mono';font-size: 70%; font-weight: lighter !important; color: #000">0X</span><span style="font-family: 'roboto mono'; font-weight: bold">`;
+
+        let palette = this.palettes[
+                (address.charCodeAt(2) + address.charCodeAt(8) + address.charCodeAt(15)) % this.palettes.length
+            ]
+        for (let i = 2; i < address.length - 2; i+= 2) {
+            let char = address[i-1];
+            let ca = address.charCodeAt(i);
+            let cb = address.charCodeAt(i+1);
+            let cc = address.charCodeAt(i+1);
+            let underline = i % 3 == 0 ? 'text-decoration:underline' : '';
+            let id = Math.round((ca + cb + cc) % emoji.length);
+            let rgb = palette[Math.round((ca + cb + cc) % palette.length)];
+            string += `<span style="color: ${rgb} !important;${underline}">${address[i+1]}${address[i+2]}${emoji[id].emoji}</span>`;
+        }
+        string += "</span>";
+        return string;   
+    }
+
+    formatAddressBlocksEmojiOnly(address) {
+        //check if address is a properly formatted Ethereum address
+        if (!address) return undefined;
+        //each character is colored by its position plus ansii code
+        let rgbs = [];
+        let string = `<span style="font-family: 'roboto mono';font-size: 70%; font-weight: lighter !important; color: #000">0X</span><span style="font-family: 'roboto mono'; font-weight: bold">`;
+
+        let palette = this.palettes[
+                (address.charCodeAt(2) + address.charCodeAt(8) + address.charCodeAt(15)) % this.palettes.length
+            ]
+        for (let i = 2; i < address.length - 2; i+= 2) {
+            let char = address[i-1];
+            let ca = address.charCodeAt(i);
+            let cb = address.charCodeAt(i+1);
+            let cc = address.charCodeAt(i+1);
+            let underline = i % 3 == 0 ? 'text-decoration:underline' : '';
+            let id = Math.round((ca + cb + cc) % emoji.length);
+            let rgb = palette[Math.round((ca + cb + cc) % palette.length)];
+            string += `<span style="color: ${rgb} !important;${underline}; white-space:nowrap">${emoji[id].emoji}</span>`;
+        }
+        string += "</span>";
+        return string;   
+    }
+
+    formatAddressBlocksBorder(address) {
+        //check if address is a properly formatted Ethereum address
+        if (!address) return undefined;
+        //each character is colored by its position plus ansii code
+        let rgbs = [];
+        let string = `<span style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px;">0X</span><span style="font-family: 'roboto mono'; font-weight: lighter">`;
+
+        let palette = this.palettes[
+                (address.charCodeAt(2) + address.charCodeAt(8) + address.charCodeAt(15)) % this.palettes.length
+            ]
+        for (let i = 2; i < address.length - 2; i+= 2) {
+            let char = address[i-1];
+            let ca = address.charCodeAt(i);
+            let cb = address.charCodeAt(i+1);
+            let cc = address.charCodeAt(i+1);
+            let id = Math.round((ca + cb + cc) % emoji.length);
+            let rgb = palette[Math.round((ca + cb + cc) % palette.length)];
+            let underline = ca % 3 > 0 ? `border: 1 px solid ${rgb}; border-radius: 3px !important; color: white !important; background: ${rgb}`  : `color: #000 !important`;
+            string += `<span style=" padding: 0 3px 0 3px; margin: 0 1px; ${underline}">${address[i+1]}${address[i+2]}</span>`;
         }
         string += "</span>";
         return string;   

@@ -2,30 +2,19 @@
 // import 'chromereload/devonly'
 const IdentiAddress = require('./IdentiAddress');
 const ident = new IdentiAddress();
+const $ = require("jquery");
 
-console.log(IdentiAddress)
-console.log(`'Allo 'Allo! Content script2`)
+// console.log(IdentiAddress)
+// console.log(`'Allo 'Allo! Content script2`)
 var links = Array.from(document.links);
-links = Array.from(document.getElementsByTagName("span")).concat(links);
-console.log(links)
+links = Array.from(document.getElementsByTagName("span")).concat(Array.from(document.getElementsByTagName("div"))).concat(Array.from(document.getElementsByTagName("td"))).concat(links);
+// console.log(links)
 for(var i = 0; i < links.length; i++) {
     let link = links[i];
     if (link.innerText.match(/0x/))
     {
-        console.log(link)
-        // console.log(ident.formatAddress(link.innerText)) 
-        link.innerHTML = ident.formatAddressBlocks(link.innerText);
-        console.log(link.innerText.length)
+        // link.innerHTML = ident.formatAddressBlocks(link.innerText);
     }
-    var re = /^0x([A-Fa-f0-9]{64})$/g;
-    var m;
-
-    do {
-        m = re.exec(document.body.innerHTML);
-        if (m) {
-            console.log(m[1], m[2]);
-        }
-    } while (m);
     
   // var linkHref = document.createTextNode(links[i].href);
   // var lineBreak = document.createElement("br");
@@ -33,3 +22,18 @@ for(var i = 0; i < links.length; i++) {
   // document.body.appendChild(lineBreak);
 }
 
+var re = /<a.*href=\".*"|(0x)?[0-9a-zA-Z]{42}/g;
+var m;
+
+for (const a of links) {
+  if (a.textContent.match(re)) {
+    let inner = a.innerHTML;
+    // console.log(a.textContent.match(re))
+    // console.log("poep")
+    if (a.innerHTML.indexOf("href") > -1) continue;
+    inner = inner.replace(a.textContent.match(re)["0"],ident.formatAddressBlocksBorder(a.textContent.match(re)["0"]))
+    a.innerHTML = inner;
+    // console.log(a.innerText)
+    // console.log(a.innerHTML)
+  }
+}
