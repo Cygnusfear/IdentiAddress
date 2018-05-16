@@ -1,10 +1,8 @@
 // Enable chromereload by uncommenting this line:
 // import 'chromereload/devonly'
+
 const IdentiAddress = require("./IdentiAddress");
 const ident = new IdentiAddress();
-
-// console.log(IdentiAddress)
-// console.log(`'Allo 'Allo! Content script2`)
 
 let parseLinks = function() {
     var links = Array.from(document.links);
@@ -27,15 +25,6 @@ let parseLinks = function() {
         }
     }
 };
-let replace =
-    ident.formatAddressBlocks("0XF3F47Be96b7aeFa33bfdD741760268ed7049b6") +
-    "<br/> " +
-    ident.formatAddressBlocks("0XF3F47Be96b7aeFa33bfdD741760268ed7049b5") +
-    "<br/> " +
-    ident.formatAddressBlocks("0x7f3f47be96b7aefa33bfdd741760268ed7049b6c") +
-    "<br/> " +
-    ident.formatAddressBlocks("0x7f3f47be96b4aefa33bfdd741760268ed7049b6c") +
-    "<br/>";
 
 function r(f) {
     /in/.test(document.readyState) ? setTimeout(r, 9, f) : f();
@@ -45,5 +34,3 @@ r(function() {
 });
 
 parseLinks();
-
-// document.getElementsByTagName("body")[0].innerHTML = replace + document.getElementsByTagName("body")[0].innerHTML;
