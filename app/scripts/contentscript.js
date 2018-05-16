@@ -44,9 +44,6 @@ r(function() {
     parseLinks();
 });
 
-setInterval(
-    //do work
-    parseLinks,
-    2000,
-);
+parseLinks();
+
 // document.getElementsByTagName("body")[0].innerHTML = replace + document.getElementsByTagName("body")[0].innerHTML;
