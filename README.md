@@ -1,5 +1,7 @@
 # IdentiAddress
 
+![IndentiAddress with the Underline feature enabled](/promo/screenshot_underline.png?raw=true "IndentiAddress using the underline option")
+
 IdentiAddress is a proof of concept chrome plugin that changes the appearance of Ethereum addresses in the browser to be more legible and recognizable. Addresses as currently used are akin to using IP addresses on the web. They are long strings of characters, that are hard to checksum for a human being. They are a security issue to both experienced and novice users alike, causing them to be very hard to distinguish and verify.
 
 This plugin hashes addresses on webpages visited and changes them to make them easily recognisable to any user, even with only the first characters of the address being displayed. This proof of concept contains various experiments with formatting, such as using blocks, underlines, emoticons etcetera which can be found in the IdentiAddress.js file.
