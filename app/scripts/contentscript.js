@@ -3,24 +3,32 @@
 
 const IdentiAddress = require("./IdentiAddress");
 const ident = new IdentiAddress();
+// const Lookup = require("./ENSReverseLookup");
+// const enslookup = new Lookup();
 
 let parseLinks = function() {
     var links = Array.from(document.links);
     links = Array.from(document.body.getElementsByTagName("*")).concat(links);
-    console.log(links);
 
-    var re = /^(0x)?[0-9a-zA-Z]{64}|^(0x)?[0-9a-zA-Z]{40}/g;
+    var re = /(0[xX][0-9a-zA-Z]{40}(?![0-9a-zA-Z]))/g;
     var m;
     for (const a of links) {
         let inner = a.innerHTML;
         if (inner.indexOf("<") > -1) continue;
-        console.log(a.innerHTML);
+        // console.log(a.innerHTML);
         if (a.textContent.match(re)) {
-            console.log("poep");
+            // console.log("poep");
+            let address = a.textContent.match(re)["0"];
             inner = inner.replace(
-                a.textContent.match(re)["0"],
-                ident.formatAddressBottomBorder(a.textContent.match(re)["0"]),
+                address,
+                ident.formatAddressBottomBorder(address),
             );
+            // enslookup.resolve(address).then(lookup => {
+            //     if (lookup) {
+            //         let el = document.body.getElementById("address-" + address);
+            //         el.outerHTML = ident.formatAddressBottomBorder(lookup);
+            //     }
+            // });
             a.innerHTML = inner;
         }
     }

@@ -66,7 +66,7 @@ class IdentiAddress {
         if (!address) return undefined;
         //each character is colored by its position plus ansii code
         let rgbs = [];
-        let string = `<span style="font-family: 'roboto mono'; font-weight: lighter !important; color: #000">0X</span><span style="font-family: 'roboto mono'; font-weight: bold">`;
+        let string = `<span style="font-family: 'roboto mono'; font-weight: lighter !important; color: #000;">0X</span><span style="font-family: 'roboto mono'; font-weight: bold">`;
 
         let palette = this.palettes[
             (address.charCodeAt(2) +
@@ -133,7 +133,7 @@ class IdentiAddress {
         ];
 
         let border = palette[Math.round(hashed.charCodeAt(3) % palette.length)];
-        let string = `<span style=""><span style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px;">0X</span><span style="font-family: 'roboto mono'; font-weight: lighter">`;
+        let string = `<span style="font-size: 0.8em"><span style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px;">0X</span><span style="font-family: 'roboto mono'; font-weight: lighter">`;
 
         for (let i = 2; i < address.length - 1; i += 2) {
             let char = address[i - 1];
@@ -156,9 +156,9 @@ class IdentiAddress {
                     : `${address[i + 1]}`;
             let underline =
                 ca % 3 > 0
-                    ? `border: 1px solid ${rgbastring}; border-radius: 3px !important; color: white !important; background: ${rgbastring}`
-                    : `border: 1px solid #eee; border-radius: 3px !important; color: white !important; background: #fefefe; color: #000 !important`;
-            string += `<span style=" padding: 0 3px 0 3px; margin: 0 1px; ${underline}">${adresses}</span>`;
+                    ? `color: white !important; background: ${rgbastring}; padding-top:1px`
+                    : `color: white !important; background: #fefefe; color: #000 !important; padding-top:1px`;
+            string += `<span style=" padding: 2px 3px 0 3px; margin: 0 0px; ${underline}">${adresses}</span>`;
         }
         string += "</span></span>";
         return string;
@@ -223,7 +223,54 @@ class IdentiAddress {
         ];
 
         let border = palette[Math.round(hashed.charCodeAt(3) % palette.length)];
-        let string = `<span style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px; overflow: hidden;">0X</span><span style="border-bottom: 0px solid #aaa; border-radius: 5px;"><span style="font-family: 'roboto mono'; font-weight: lighter;">`;
+        let string = `<span id='address-${address}' style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px; overflow: hidden; font-size: 0.8em">0X</span><span style="border-bottom: 0px solid #aaa; border-radius: 5px;"><span style="font-family: 'roboto mono'; font-weight: lighter;font-size: 0.8em">`;
+
+        for (let i = 3; i < address.length - 1; i += 3) {
+            let char = address[i - 1];
+            let ca = hashed.charCodeAt(i);
+            let cb = hashed.charCodeAt(i + 1);
+            let cc = hashed.charCodeAt(i + 2);
+            let id = Math.round((ca + cb + cc) % emoji.length);
+            let hex =
+                palette[
+                    Math.round(
+                        (hashed.charCodeAt(5) + (ca * cb + cc)) %
+                            palette.length,
+                    )
+                ];
+            let rgb = hex ? this.hexToRgb(hex) : "#fffff";
+            let rgbastring = `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
+            let adresses =
+                address[i + 3] !== undefined
+                    ? `${address[i + 1]}${address[i + 2]}${address[i + 3]}`
+                    : address[i + 2] !== undefined
+                        ? `${address[i + 1]}${address[i + 2]}`
+                        : `${address[i + 1]}`;
+            let underline =
+                ca % 3 > 0
+                    ? `color: ${rgbastring}; border-bottom: 2px solid ${rgbastring}; font-weight: bold !important`
+                    : `!important; border-bottom: 2px solid #fefefe;`;
+            string += `<span style=" padding: 0 1px 0 1px; ${underline}">${adresses}</span>`;
+        }
+        string += "</span></span>";
+        return string;
+    }
+
+    formatAddressPrefixBlock(address) {
+        //check if address is a properly formatted Ethereum address
+        if (!address) return undefined;
+        //each character is colored by its position plus ansii code
+        let rgbs = [];
+        let hashed = hash(address.toUpperCase());
+        let palette = this.palettes[
+            (hashed.charCodeAt(2) +
+                hashed.charCodeAt(8) +
+                hashed.charCodeAt(15)) %
+                this.palettes.length
+        ];
+
+        let border = palette[Math.round(hashed.charCodeAt(3) % palette.length)];
+        let string = `<span id='address-${address}' style="font-family: 'roboto mono'; font-weight: bolder !important; color: #000; margin: 0 2px; overflow: hidden; font-size: 0.8em">0X</span><span style="border-bottom: 0px solid #aaa; border-radius: 5px;"><span style="font-family: 'roboto mono'; font-weight: lighter;font-size: 0.8em">`;
 
         for (let i = 3; i < address.length - 1; i += 3) {
             let char = address[i - 1];
